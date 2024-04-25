@@ -1,9 +1,9 @@
 import {
   Body,
-  ConflictException,
   Controller,
   HttpCode,
   Post,
+  UnauthorizedException,
   UsePipes,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -32,24 +32,24 @@ export class Authenticate {
   async handle(@Body() body: TAuthenticate) {
     const { email, password } = body
 
-    const userExists = await this.db.user.findUnique({
+    const user = await this.db.user.findUnique({
       where: { email },
     })
 
-    if (!userExists) {
-      throw new ConflictException('Invalid credentials')
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials')
     }
 
-    const passwordMatch = await compare(password, userExists.password)
+    const passwordMatch = await compare(password, user.password)
 
     if (!passwordMatch) {
-      throw new ConflictException('Invalid credentials')
+      throw new UnauthorizedException('Invalid credentials')
     }
 
-    const token = this.jwt.sign({
-      sub: userExists.id,
+    const accessToken = this.jwt.sign({
+      sub: user.id,
     })
-    console.log(token)
-    return token
+
+    return { access_token: accessToken }
   }
 }
