@@ -5,12 +5,16 @@ import { Question } from '@/domain/forum/enterprise/entities/question'
 import { Injectable } from '@nestjs/common'
 import { PrismaQuestionMapper } from '../mappers/prisma-question-mapper'
 import { PrismaService } from '../prisma.service'
+import { PrismaQuestionAttachmentsRepository } from './prisma-question-attachments-repository'
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
   public items: Question[] = []
 
-  constructor(private db: PrismaService) {}
+  constructor(
+    private db: PrismaService,
+    private questionAttachmentsRepository: PrismaQuestionAttachmentsRepository,
+  ) {}
 
   async findBySlug(slug: string): Promise<Question | null> {
     const question = this.items.find((item) => item.slug.value === slug)
