@@ -31,8 +31,8 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "title": "My question",
-  "content": "How magnets work?"
+  "title": "My new question",
+  "content": "How magnets really work?"
 }
 
 ###
