@@ -1,4 +1,5 @@
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question'
+import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/delete-question'
 import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question'
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions'
 import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug'
@@ -10,6 +11,7 @@ import { DatabaseModule } from '../database/database.module'
 import { Authenticate } from './controllers/authenticate'
 import { CreateAccount } from './controllers/create-account'
 import { CreateQuestion } from './controllers/create-question'
+import { DeleteQuestion } from './controllers/delete-question'
 import { EditQuestion } from './controllers/edit-question'
 import { FetchRecentQuestions } from './controllers/fetch-recent-questions'
 import { GetQuestionBySlug } from './controllers/get-question-by-slug'
@@ -23,6 +25,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
     GetQuestionBySlug,
     CreateQuestion,
     EditQuestion,
+    DeleteQuestion,
   ],
   providers: [
     RegisterStudentUseCase,
@@ -31,6 +34,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
     GetQuestionBySlugUseCase,
     CreateQuestionUseCase,
     EditQuestionUseCase,
+    DeleteQuestionUseCase,
   ],
 })
 export class HttpModule {}
