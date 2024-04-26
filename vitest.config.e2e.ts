@@ -9,6 +9,10 @@ export default defineConfig({
     root: './',
     exclude: ['**/data/pg/**'],
     setupFiles: ['./test/setup-e2e.ts'],
+    coverage: {
+      include: ['**/*.ts', '**/*.spec.ts', '**/*.e2e-spec.ts'],
+      exclude: ['**/data/pg/**', './node_modules/**'],
+    },
   },
   plugins: [
     tsConfigPaths(),

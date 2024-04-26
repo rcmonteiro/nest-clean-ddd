@@ -7,6 +7,11 @@ export default defineConfig({
     globals: true,
     root: './',
     exclude: ['**/data/pg/**', './node_modules/**'],
+    coverage: {
+      include: ['**/*.ts', '**/*.spec.ts', '**/*.e2e-spec.ts'],
+      exclude: ['**/data/pg/**', './node_modules/**'],
+      reporter: ['text', 'json', 'html'],
+    },
   },
   plugins: [
     tsConfigPaths(),
