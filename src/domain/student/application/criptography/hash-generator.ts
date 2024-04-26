@@ -1,3 +1,3 @@
 export abstract class HashGenerator {
-  abstract compare(plain: string): Promise<string>
+  abstract hash(plain: string): Promise<string>
 }
