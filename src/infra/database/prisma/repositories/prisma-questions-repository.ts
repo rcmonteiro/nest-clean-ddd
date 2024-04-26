@@ -10,6 +10,7 @@ import { PrismaQuestionAttachmentsRepository } from './prisma-question-attachmen
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
   public items: Question[] = []
+  private readonly PAGE_SIZE = 20
 
   constructor(
     private db: PrismaService,
@@ -17,8 +18,13 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   ) {}
 
   async findBySlug(slug: string): Promise<Question | null> {
-    const question = this.items.find((item) => item.slug.value === slug)
-    return question ?? null
+    const question = await this.db.question.findUnique({ where: { slug } })
+
+    if (!question) {
+      return null
+    }
+
+    return PrismaQuestionMapper.toDomain(question)
   }
 
   async findById(id: string): Promise<Question | null> {
@@ -32,31 +38,31 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   }
 
   async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
-    const questions = this.items
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice((page - 1) * 20, page * 20)
-    return questions
+    const questions = await this.db.question.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: this.PAGE_SIZE,
+      skip: (page - 1) * this.PAGE_SIZE,
+    })
+
+    return questions.map(PrismaQuestionMapper.toDomain)
   }
 
   async create(question: Question): Promise<void> {
-    this.items.push(question)
+    const data = PrismaQuestionMapper.toPrisma(question)
+    await this.db.question.create({
+      data,
+    })
     DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
   async save(question: Question): Promise<void> {
-    const index = this.items.findIndex((item) => item.id === question.id)
-    if (index >= 0) {
-      this.items[index] = question
-      DomainEvents.dispatchEventsForAggregate(question.id)
-    }
+    const data = PrismaQuestionMapper.toPrisma(question)
+    await this.db.question.update({ where: { id: data.id }, data })
+    DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
   async delete(id: string): Promise<void> {
-    const index = this.items.findIndex((item) => item.id.toString() === id)
-    if (index >= 0) {
-      this.items.splice(index, 1)
-    }
-
+    await this.db.question.delete({ where: { id } })
     this.questionAttachmentsRepository.deleteManyByQuestionId(id)
   }
 }
