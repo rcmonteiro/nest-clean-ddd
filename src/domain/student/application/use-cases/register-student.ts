@@ -36,7 +36,7 @@ export class RegisterStudentUseCase {
       return left(new StudentAlreadyExistsError(email))
     }
 
-    const hashedPassword = await this.hashGenerator.execute(password)
+    const hashedPassword = await this.hashGenerator.compare(password)
 
     const student = Student.create({
       name,

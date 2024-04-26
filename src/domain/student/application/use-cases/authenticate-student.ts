@@ -35,7 +35,7 @@ export class AuthenticateStudentUseCase {
       return left(new WrongCredentialsError())
     }
 
-    const passwordMatch = await this.hashComparator.execute(
+    const passwordMatch = await this.hashComparator.hash(
       password,
       student.password,
     )
@@ -44,7 +44,7 @@ export class AuthenticateStudentUseCase {
       return left(new WrongCredentialsError())
     }
 
-    const accessToken = await this.encrypter.execute({
+    const accessToken = await this.encrypter.encrypt({
       sub: student.id.toString(),
     })
 
