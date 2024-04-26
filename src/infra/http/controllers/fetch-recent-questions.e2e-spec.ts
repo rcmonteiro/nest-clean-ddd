@@ -1,60 +1,54 @@
 import { AppModule } from '@/infra/app.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { QuestionFactory } from 'test/factories/make-question'
+import { StudentFactory } from 'test/factories/make-student'
 
 describe('Fetch Recent Question (e2e)', () => {
   let app: INestApplication
-  let db: PrismaService
   let jwt: JwtService
+  let studentFactory: StudentFactory
+  let questionFactory: QuestionFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [StudentFactory, QuestionFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
-    db = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
+    studentFactory = moduleRef.get(StudentFactory)
+    questionFactory = moduleRef.get(QuestionFactory)
 
     await app.init()
   })
 
   test('[GET] /questions', async () => {
-    const user = await db.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'john.doe@me.com',
-        password: '123123',
-      },
-    })
+    const user = await studentFactory.makeDbStudent()
 
     const accessToken = jwt.sign({
-      sub: user.id,
+      sub: user.id.toString(),
     })
 
-    await db.question.createMany({
-      data: [
-        {
-          title: 'New question title 1',
-          slug: 'new-question-title-1',
-          content: 'New question content-1',
-          authorId: user.id,
-        },
-        {
-          title: 'New question title 2',
-          slug: 'new-question-title-2',
-          content: 'New question content-2',
-          authorId: user.id,
-        },
-      ],
-    })
+    await Promise.all([
+      questionFactory.makeDbQuestion({
+        title: 'New question title 1',
+        authorId: user.id,
+      }),
+      questionFactory.makeDbQuestion({
+        title: 'New question title 2',
+        authorId: user.id,
+      }),
+    ])
 
     const response = await request(app.getHttpServer())
       .get('/questions')
       .set('Authorization', `Bearer ${accessToken}`)
+      .send()
 
     expect(response.status).toBe(200)
     expect(response.body.questions).toHaveLength(2)
