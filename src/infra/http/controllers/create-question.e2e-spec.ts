@@ -4,11 +4,13 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { StudentFactory } from 'test/factories/make-student'
 
 describe('Create Question (e2e)', () => {
   let app: INestApplication
   let db: PrismaService
   let jwt: JwtService
+  let studentFactory: StudentFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -18,21 +20,16 @@ describe('Create Question (e2e)', () => {
     app = moduleRef.createNestApplication()
     db = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
+    studentFactory = moduleRef.get(StudentFactory)
 
     await app.init()
   })
 
   test('[POST] /questions', async () => {
-    const user = await db.user.create({
-      data: {
-        name: 'John Doe',
-        email: 'john.doe@me.com',
-        password: '123123',
-      },
-    })
+    const user = await studentFactory.makeDbStudent()
 
     const accessToken = jwt.sign({
-      sub: user.id,
+      sub: user.id.toString(),
     })
 
     const response = await request(app.getHttpServer())
