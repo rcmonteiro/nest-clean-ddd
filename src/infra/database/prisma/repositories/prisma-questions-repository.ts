@@ -9,7 +9,6 @@ import { PrismaQuestionAttachmentsRepository } from './prisma-question-attachmen
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
-  public items: Question[] = []
   private readonly PAGE_SIZE = 20
 
   constructor(
