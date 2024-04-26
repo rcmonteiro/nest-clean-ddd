@@ -1,6 +1,5 @@
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { TTokenPayload } from '@/infra/auth/jwt.strategy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
@@ -9,7 +8,6 @@ import {
   Controller,
   HttpCode,
   Post,
-  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
 
@@ -23,7 +21,6 @@ type TCreateQuestion = z.infer<typeof createQuestionBodySchema>
 const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema)
 
 @Controller('/questions')
-@UseGuards(JwtAuthGuard)
 export class CreateQuestion {
   constructor(private createQuestion: CreateQuestionUseCase) {}
 

@@ -1,5 +1,6 @@
 import { AuthenticateStudentUseCase } from '@/domain/student/application/use-cases/authenticate-student'
 import { WrongCredentialsError } from '@/domain/student/application/use-cases/errors/wrong-credentials-error'
+import { Public } from '@/infra/auth/public'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import {
   BadRequestException,
@@ -20,6 +21,7 @@ const authenticateBodySchema = z.object({
 type TAuthenticate = z.infer<typeof authenticateBodySchema>
 
 @Controller('/sessions')
+@Public()
 export class Authenticate {
   constructor(private authenticateStudent: AuthenticateStudentUseCase) {}
 
