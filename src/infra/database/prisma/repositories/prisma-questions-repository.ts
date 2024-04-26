@@ -5,16 +5,12 @@ import { Question } from '@/domain/forum/enterprise/entities/question'
 import { Injectable } from '@nestjs/common'
 import { PrismaQuestionMapper } from '../mappers/prisma-question-mapper'
 import { PrismaService } from '../prisma.service'
-import { PrismaQuestionAttachmentsRepository } from './prisma-question-attachments-repository'
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
   private readonly PAGE_SIZE = 20
 
-  constructor(
-    private db: PrismaService,
-    private questionAttachmentsRepository: PrismaQuestionAttachmentsRepository,
-  ) {}
+  constructor(private db: PrismaService) {}
 
   async findBySlug(slug: string): Promise<Question | null> {
     const question = await this.db.question.findUnique({ where: { slug } })
@@ -62,6 +58,5 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
   async delete(id: string): Promise<void> {
     await this.db.question.delete({ where: { id } })
-    this.questionAttachmentsRepository.deleteManyByQuestionId(id)
   }
 }
