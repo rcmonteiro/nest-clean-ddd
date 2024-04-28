@@ -1,6 +1,7 @@
 import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question'
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question'
 import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/delete-question'
+import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer'
 import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question'
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions'
 import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug'
@@ -14,6 +15,7 @@ import { Authenticate } from './controllers/authenticate'
 import { CreateAccount } from './controllers/create-account'
 import { CreateQuestion } from './controllers/create-question'
 import { DeleteQuestion } from './controllers/delete-question'
+import { EditAnswer } from './controllers/edit-answer'
 import { EditQuestion } from './controllers/edit-question'
 import { FetchRecentQuestions } from './controllers/fetch-recent-questions'
 import { GetQuestionBySlug } from './controllers/get-question-by-slug'
@@ -27,6 +29,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
     GetQuestionBySlug,
     CreateQuestion,
     AnswerQuestion,
+    EditAnswer,
     EditQuestion,
     DeleteQuestion,
   ],
@@ -37,6 +40,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
     GetQuestionBySlugUseCase,
     CreateQuestionUseCase,
     AnswerQuestionUseCase,
+    EditAnswerUseCase,
     EditQuestionUseCase,
     DeleteQuestionUseCase,
   ],
