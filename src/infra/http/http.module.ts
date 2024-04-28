@@ -1,3 +1,4 @@
+import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question'
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question'
 import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/delete-question'
 import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question'
@@ -8,6 +9,7 @@ import { RegisterStudentUseCase } from '@/domain/student/application/use-cases/r
 import { Module } from '@nestjs/common'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
+import { AnswerQuestion } from './controllers/answer-question'
 import { Authenticate } from './controllers/authenticate'
 import { CreateAccount } from './controllers/create-account'
 import { CreateQuestion } from './controllers/create-question'
@@ -24,6 +26,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
     FetchRecentQuestions,
     GetQuestionBySlug,
     CreateQuestion,
+    AnswerQuestion,
     EditQuestion,
     DeleteQuestion,
   ],
@@ -33,6 +36,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
     FetchRecentQuestionsUseCase,
     GetQuestionBySlugUseCase,
     CreateQuestionUseCase,
+    AnswerQuestionUseCase,
     EditQuestionUseCase,
     DeleteQuestionUseCase,
   ],
