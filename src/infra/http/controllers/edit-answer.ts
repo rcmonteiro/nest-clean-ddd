@@ -14,6 +14,7 @@ import { z } from 'zod'
 
 const editAnswer = z.object({
   content: z.string(),
+  attachments: z.array(z.string().uuid()).default([]),
 })
 
 type TEditAnswer = z.infer<typeof editAnswer>
@@ -31,14 +32,14 @@ export class EditAnswer {
     @Body(bodyValidationPipe) body: TEditAnswer,
     @CurrentUser() user: TTokenPayload,
   ) {
-    const { content } = body
+    const { content, attachments } = body
     const userId = user.sub
 
     const result = await this.editAnswer.execute({
       answerId,
       content,
       authorId: userId,
-      attachmentIds: [],
+      attachmentIds: attachments,
     })
 
     if (result.isLeft()) {
