@@ -37,6 +37,7 @@ import { FetchQuestionAnswers } from './controllers/fetch-question-answers'
 import { FetchQuestionComments } from './controllers/fetch-question-comments'
 import { FetchRecentQuestions } from './controllers/fetch-recent-questions'
 import { GetQuestionBySlug } from './controllers/get-question-by-slug'
+import { UploadAttachment } from './controllers/upload-attachment'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -59,6 +60,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
     CommentOnAnswer,
     DeleteQuestionComment,
     DeleteAnswerComment,
+    UploadAttachment,
   ],
   providers: [
     RegisterStudentUseCase,
