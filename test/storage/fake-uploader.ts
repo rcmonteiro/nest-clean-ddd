@@ -3,7 +3,7 @@ import {
   UploadParams,
   UploadResponse,
 } from '@/domain/forum/application/storage/uploader'
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 
 interface File {
   fileName: string

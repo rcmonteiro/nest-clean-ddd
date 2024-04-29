@@ -19,6 +19,7 @@ import { RegisterStudentUseCase } from '@/domain/student/application/use-cases/r
 import { Module } from '@nestjs/common'
 import { CryptographyModule } from '../cryptography/cryptography.module'
 import { DatabaseModule } from '../database/database.module'
+import { StorageModule } from '../storage/storage.module'
 import { AnswerQuestion } from './controllers/answer-question'
 import { Authenticate } from './controllers/authenticate'
 import { ChooseQuestionBestAnswer } from './controllers/choose-question-best-answer'
@@ -40,7 +41,7 @@ import { GetQuestionBySlug } from './controllers/get-question-by-slug'
 import { UploadAttachment } from './controllers/upload-attachment'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule],
   controllers: [
     CreateAccount,
     Authenticate,
