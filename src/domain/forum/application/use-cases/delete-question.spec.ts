@@ -21,7 +21,7 @@ describe('Delete Question Use Case (unit tests)', () => {
     sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository)
   })
 
-  it.only('should be able to delete a question', async () => {
+  it('should be able to delete a question', async () => {
     const newQuestion = makeQuestion(
       { authorId: new UniqueEntityId('author-1') },
       new UniqueEntityId('question-1'),
