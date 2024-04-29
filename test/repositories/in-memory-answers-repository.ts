@@ -39,12 +39,12 @@ export class InMemoryAnswersRepository implements AnswersRepository {
     DomainEvents.dispatchEventsForAggregate(answer.id)
   }
 
-  async delete(id: string): Promise<void> {
-    const index = this.items.findIndex((item) => item.id.toString() === id)
+  async delete(answer: Answer): Promise<void> {
+    const index = this.items.findIndex((item) => item.id === answer.id)
     if (index >= 0) {
       this.items.splice(index, 1)
     }
 
-    this.answerAttachmentsRepository.deleteManyByAnswerId(id)
+    this.answerAttachmentsRepository.deleteManyByAnswerId(answer.id.toString())
   }
 }

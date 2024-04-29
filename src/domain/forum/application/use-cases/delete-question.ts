@@ -32,7 +32,7 @@ export class DeleteQuestionUseCase {
       return left(new NotAllowedError())
     }
 
-    await this.questionRepository.delete(questionId)
+    await this.questionRepository.delete(question)
     return right(null)
   }
 }

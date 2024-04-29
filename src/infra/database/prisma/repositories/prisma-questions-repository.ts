@@ -56,7 +56,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
-  async delete(id: string): Promise<void> {
-    await this.db.question.delete({ where: { id } })
+  async delete(question: Question): Promise<void> {
+    await this.db.question.delete({ where: { id: question.id.toString() } })
   }
 }
