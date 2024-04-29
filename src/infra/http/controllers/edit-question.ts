@@ -15,6 +15,7 @@ import { z } from 'zod'
 const editQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
+  attachments: z.array(z.string().uuid()),
 })
 
 type TEditQuestion = z.infer<typeof editQuestionBodySchema>
@@ -32,7 +33,7 @@ export class EditQuestion {
     @Body(bodyValidationPipe) body: TEditQuestion,
     @CurrentUser() user: TTokenPayload,
   ) {
-    const { title, content } = body
+    const { title, content, attachments } = body
     const userId = user.sub
 
     const result = await this.editQuestion.execute({
@@ -40,7 +41,7 @@ export class EditQuestion {
       title,
       content,
       authorId: userId,
-      attachmentIds: [],
+      attachmentIds: attachments,
     })
 
     if (result.isLeft()) {
