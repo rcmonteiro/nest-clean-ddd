@@ -5,20 +5,22 @@ import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { AnswerFactory } from 'test/factories/make-answer'
 import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
 
-describe('Delete Question (e2e)', () => {
+describe('Delete Answer (e2e)', () => {
   let app: INestApplication
   let db: PrismaService
   let jwt: JwtService
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
+  let answerFactory: AnswerFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [StudentFactory, QuestionFactory],
+      providers: [StudentFactory, QuestionFactory, AnswerFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -26,30 +28,36 @@ describe('Delete Question (e2e)', () => {
     jwt = moduleRef.get(JwtService)
     studentFactory = moduleRef.get(StudentFactory)
     questionFactory = moduleRef.get(QuestionFactory)
+    answerFactory = moduleRef.get(AnswerFactory)
 
     await app.init()
   })
 
-  test('[Delete] /questions/:questionId', async () => {
+  test('[Delete] /answers/:answerId', async () => {
     const user = await studentFactory.makeDbStudent()
 
     const accessToken = jwt.sign({
       sub: user.id.toString(),
     })
 
-    const result = await questionFactory.makeDbQuestion({
+    const question = await questionFactory.makeDbQuestion({
       authorId: user.id,
     })
 
-    const questionId = result.id.toString()
+    const result = await answerFactory.makeDbAnswer({
+      authorId: user.id,
+      questionId: question.id,
+    })
+
+    const answerId = result.id.toString()
 
     const response = await request(app.getHttpServer())
-      .delete(`/questions/${questionId}`)
+      .delete(`/answers/${answerId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    const question = await db.question.findFirst()
+    const answer = await db.answer.findFirst()
     expect(response.status).toBe(204)
-    expect(question).toBeFalsy()
+    expect(answer).toBeFalsy()
   })
 })
