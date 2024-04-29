@@ -14,6 +14,7 @@ import { FetchQuestionAnswersUseCase } from '@/domain/forum/application/use-case
 import { FetchQuestionCommentsUseCase } from '@/domain/forum/application/use-cases/fetch-question-comments'
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions'
 import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug'
+import { UploadAndCreateAttachmentUseCase } from '@/domain/forum/application/use-cases/upload-and-create-attachment'
 import { AuthenticateStudentUseCase } from '@/domain/student/application/use-cases/authenticate-student'
 import { RegisterStudentUseCase } from '@/domain/student/application/use-cases/register-student'
 import { Module } from '@nestjs/common'
@@ -82,6 +83,7 @@ import { UploadAttachment } from './controllers/upload-attachment'
     CommentOnAnswerUseCase,
     DeleteQuestionCommentUseCase,
     DeleteAnswerCommentUseCase,
+    UploadAndCreateAttachmentUseCase,
   ],
 })
 export class HttpModule {}
