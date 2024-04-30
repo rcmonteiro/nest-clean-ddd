@@ -1,5 +1,6 @@
 import { makeQuestion } from 'test/factories/make-question'
 import { makeQuestionComment } from 'test/factories/make-question-comment'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
@@ -20,6 +21,7 @@ let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryNotificationRepository: InMemoryNotificationsRepository
 let sendNotification: SendNotificationUseCase
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
 
 let sendNotificationSpy: MockInstance<
   [SendNotificationUseCaseRequest],
@@ -29,6 +31,7 @@ let sendNotificationSpy: MockInstance<
 describe('On Question Comment Created', () => {
   beforeEach(() => {
     inMemoryStudentsRepository = new InMemoryStudentsRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
     inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository(
       inMemoryStudentsRepository,
     )
@@ -36,6 +39,8 @@ describe('On Question Comment Created', () => {
       new InMemoryQuestionAttachmentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
     inMemoryNotificationRepository = new InMemoryNotificationsRepository()
     sendNotification = new SendNotificationUseCase(
