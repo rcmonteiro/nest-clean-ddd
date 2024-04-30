@@ -33,6 +33,7 @@
     "@types/passport-jwt": "4.0.1",
     "bcryptjs": "^2.4.3",
     "dayjs": "1.11.10",
+    "ioredis": "5.4.1",
     "passport-jwt": "4.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
@@ -59,7 +60,6 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.1",
-    "unimported": "1.31.1",
     "unplugin-swc": "1.4.5",
     "vite-tsconfig-paths": "4.3.2",
     "vitest": "1.5.2"

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     container_name: nest-clean-pg
@@ -13,3 +11,11 @@ services:
       PGDATA: /data/postgres
     volumes:
       - ./data/pg:/data/postgres
+    
+  cache:
+    container_name: nest-clean-cache
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data
