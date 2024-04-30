@@ -6,7 +6,7 @@ import {
   HttpCode,
   Param,
 } from '@nestjs/common'
-import { QuestionPresenter } from '../presenters/question-presenter'
+import { QuestionDetailsPresenter } from '../presenters/question-details-presenter'
 
 @Controller('/questions/:slug')
 export class GetQuestionBySlug {
@@ -23,6 +23,6 @@ export class GetQuestionBySlug {
 
     const { question } = result.value
 
-    return { question: QuestionPresenter.toHTTP(question) }
+    return { question: QuestionDetailsPresenter.toHTTP(question) }
   }
 }
